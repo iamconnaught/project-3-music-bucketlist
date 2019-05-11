@@ -16,6 +16,7 @@ router.post('/register', async (req,res, next) => {
 	const userDbEntry = {};
 	userDbEntry.username = req.body.username;
 	userDbEntry.password = passwordHash;
+	userDbEntry.location = req.body.location
 
 	try {
 		const createdUser = await User.create(userDbEntry);	
