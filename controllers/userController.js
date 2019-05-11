@@ -22,4 +22,18 @@ router.get('/', async (req,res, next) => {
 	}
 })
 
+router.get('/:id', async (req,res,next) => {
+	try {
+		if(!req.session.loggedIn){
+			res.json({
+				data: "not logged in"
+			})
+		}
+		const foundUser = await User.findById(req.params.id);
+		res.json(foundUser.username)
+	} catch (err){
+		next(err)
+	}
+})
+
 module.exports = router;
