@@ -13,7 +13,8 @@ const superagent 	 = require('superagent')
 require('./db/db');
 
 //MIDDLEWARE
-app.use(bodyParser.urlencoded({extended: false}));
+// app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json())
 app.use(methodOverride('_method'));
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -43,6 +44,9 @@ app.get('/', ((req,res, next) => {
 
 const userController = require('./controllers/userController');
 app.use('/user', userController)
+
+const concertController = require('./controllers/concertController')
+app.use('/concert', concertController)
 
 app.listen(process.env.PORT, () => {
 	console.log('listening on port', process.env.PORT);
