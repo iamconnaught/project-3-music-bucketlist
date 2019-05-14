@@ -24,8 +24,8 @@ app.use(session({
 
 
 const corsOptions = {
-	origin: `http://localhost:${process.env.PORT}`,
-	credentials: 'include',
+	origin: `http://localhost:3000`,
+	credentials: true,
 	optionsSuccessStatus: 200
 }
 app.use(cors(corsOptions));

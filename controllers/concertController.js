@@ -4,13 +4,15 @@ const User = require('../models/user')
 const Concert = require('../models/concert')
 const superagent = require('superagent')
 
+
+// API CALL THAT SEARCHES FOR ARTISTS
 router.get('/search/:artist', (req, res, next) => {
 	superagent
 		.get(`https://api.setlist.fm/rest/1.0/search/artists?artistName=${req.params.artist}&p=1&sort=sortName`)
 		.set('X-API-key', '42RVoNqJ0gn6Z4U6iagd4VbMJ2WA2REmLjOP')
 		.set('Accept', 'application/json')
 		.then((data) => {
-			console.log(data.text);
+			// console.log(data.text);
 			const actualData = JSON.parse(data.text)
 			const justTheDataIWant = actualData.artist.map(artist =>{
 				return{
@@ -31,8 +33,11 @@ router.get('/search/:artist', (req, res, next) => {
 		})
 })
 
-
+// API CALL THAT SEARCHES FOR ARTISTS' SETLISTS
 router.get('/search/setlist/:artist', (req, res, next) => {
+
+	console.log("searching in concertController for artist: ", req.params.artist)
+
 	superagent
 		.get(`https://api.setlist.fm/rest/1.0/search/setlists?artistName=${req.params.artist}&p=1&sort=sortName`)
 		.set('X-API-key', '42RVoNqJ0gn6Z4U6iagd4VbMJ2WA2REmLjOP')
@@ -62,7 +67,7 @@ router.get('/search/setlist/:artist', (req, res, next) => {
 			})
 			res.status(200).json({
 				status: 200,
-				data: actualData
+				data: justTheDataIWant
 			})
 		}).catch((error) => {
 			next(error)
@@ -73,7 +78,10 @@ router.get('/search/setlist/:artist', (req, res, next) => {
 		})
 })
 
+
+
 // user attended a concert with
+// POST ROUTE FOR SETLIST
 router.post('/new/:id', async (req, res, next) => {
 	try {
 		// if(!req.session.loggedIn){

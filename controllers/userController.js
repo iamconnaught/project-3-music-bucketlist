@@ -4,6 +4,7 @@ const User = require('../models/user')
 const Wish = require('../models/wish')
 const superagent = require('superagent')
 
+// INDEX OF USERS
 router.get('/', async (req, res, next) => {
 	
 	console.log("session: ", req.session);
@@ -24,6 +25,7 @@ router.get('/', async (req, res, next) => {
 	}
 })
 
+// USER PROFILE
 router.get('/:id', async (req, res, next) => {
 	try {
 		if(!req.session.loggedIn){
@@ -38,13 +40,15 @@ router.get('/:id', async (req, res, next) => {
 	}
 })
 
+// SEARCH FOR ARTIST FOR WISHLIST
 router.get('/search/:artist', (req, res, next) => {
+	console.log("searching in userController for artist: ", req.params.artist)
 	superagent
 		.get(`https://api.setlist.fm/rest/1.0/search/artists?artistName=${req.params.artist}&p=1&sort=sortName`)
 		.set('X-API-key', '42RVoNqJ0gn6Z4U6iagd4VbMJ2WA2REmLjOP')
 		.set('Accept', 'application/json')
 		.then((data) => {
-			console.log(data.text);
+			// console.log(data.text);
 			const actualData = JSON.parse(data.text)
 			const justTheDataIWant = actualData.artist.map(artist =>{
 				return{
@@ -93,6 +97,8 @@ router.get('/search/:artist', (req, res, next) => {
 // 		})
 // })
 
+
+// POST ROUTE FOR WISHLIST
 router.post('/newWish/:id', async (req, res, next) => {
 	try {
 		// if(!req.session.loggedIn){
