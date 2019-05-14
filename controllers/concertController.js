@@ -101,7 +101,7 @@ router.post('/new/:id', async (req, res, next) => {
 				
 
 				thisConcert.save((err, data) => {
-					console.log(paramA, paramB);
+					
 					res.json({
 						artistName: thisConcert.artistName,
 						venue: thisConcert.venue,
