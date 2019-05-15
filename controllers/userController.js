@@ -34,7 +34,7 @@ router.get('/:id', async (req, res, next) => {
 				data: "not logged in"
 			})
 		} else {
-			const foundUser = await User.findById(req.session.userDbId).populate('wishlist');
+			const foundUser = await User.findById(req.session.userDbId).populate('wishlist').populate('concerts');
 			res.status(200).json(foundUser)
 			
 		}

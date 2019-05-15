@@ -98,6 +98,10 @@ router.post('/new/:id', async (req, res, next) => {
 			ownerId: currentUser
 		})
 
+		await thisConcert.save()
+		currentUser.concerts.push(thisConcert)
+		await currentUser.save()
+
 		superagent
 			.get(`https://api.setlist.fm/rest/1.0/setlist/${thisConcert.setlistId}`)
 			.set('X-API-key', '42RVoNqJ0gn6Z4U6iagd4VbMJ2WA2REmLjOP')
