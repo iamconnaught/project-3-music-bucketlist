@@ -107,9 +107,19 @@ router.post('/newWish/:id', async (req, res, next) => {
 		// 	})
 		// }
 		
-		thisWish = new Wish({
-			artistId: req.params.id
+		// find current user based on session 
+		// 
+
+		console.log("session: ", req.session);
+
+		const currentUser = await User.findById(req.session.userDbId)
+
+
+		const thisWish = new Wish({
+			artistId: req.params.id,
+			ownerId: currentUser
 		})
+
 		superagent
 			.get(`https://api.setlist.fm/rest/1.0/artist/${req.params.id}`)
 			.set('X-API-key', '42RVoNqJ0gn6Z4U6iagd4VbMJ2WA2REmLjOP')

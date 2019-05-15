@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Concert = require('./concert')
+const Concert = require('./concert');
+const Wish = require('./wish')
 
 
 const UserSchema = new mongoose.Schema({
@@ -9,6 +10,10 @@ const UserSchema = new mongoose.Schema({
   concert: {
   	type: mongoose.Schema.Types.ObjectId,
   	ref: 'Concert'
+  },
+  wish: {
+  	type: mongoose.Schema.Types.ObjectId,
+  	ref: 'Wish'
   }
 });
 

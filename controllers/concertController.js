@@ -90,9 +90,14 @@ router.post('/new/:id', async (req, res, next) => {
 		// 	})
 
 		// }
+
+		const currentUser = await User.findById(req.session.userDbId)
+		
 		thisConcert = new Concert({
-			setlistId: req.params.id
+			setlistId: req.params.id,
+			ownerId: currentUser
 		})
+
 		superagent
 			.get(`https://api.setlist.fm/rest/1.0/setlist/${thisConcert.setlistId}`)
 			.set('X-API-key', '42RVoNqJ0gn6Z4U6iagd4VbMJ2WA2REmLjOP')
@@ -117,6 +122,7 @@ router.post('/new/:id', async (req, res, next) => {
 						state: thisConcert.state,
 						date: thisConcert.date,
 						set: thisConcert.set
+						// ownerId: req.session.userDbId
 					})					
 				})
 			})

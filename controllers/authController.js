@@ -24,6 +24,8 @@ router.post('/register', async (req,res, next) => {
 		req.session.userDbId = createdUser._id;
 		console.log(createdUser);
 
+		console.log(req.session)
+
 		res.json({
 			status: 200,
 			data: createdUser
@@ -43,6 +45,8 @@ router.post('/login', async (req,res, next) => {
 				req.session.message = '';
 				req.session.loggedIn = true;
 				req.session.userDbId = foundUser._id;
+
+				console.log(req.session);
 
 				res.json({
 					status: 200,

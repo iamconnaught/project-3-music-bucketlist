@@ -8,6 +8,10 @@ const ConcertSchema = new mongoose.Schema({
 	date: Date,
 	set: Array,
 	setlistId: String,
+	ownerId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
+	}
 
 })
 
