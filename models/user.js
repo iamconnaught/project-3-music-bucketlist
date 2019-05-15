@@ -7,14 +7,14 @@ const UserSchema = new mongoose.Schema({
   username: String,
   password: String,
   location: String,
-  concert: {
+  concerts: [{
   	type: mongoose.Schema.Types.ObjectId,
   	ref: 'Concert'
-  },
-  wish: {
+  }],
+  wishlist: [{
   	type: mongoose.Schema.Types.ObjectId,
   	ref: 'Wish'
-  }
+  }]
 });
 
 

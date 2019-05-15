@@ -33,6 +33,12 @@ app.use(cors(corsOptions));
 const authController = require('./controllers/authController');
 app.use('/auth', authController);
 
+const userController = require('./controllers/userController');
+app.use('/user', userController)
+
+const concertController = require('./controllers/concertController')
+app.use('/concert', concertController)
+
 
 app.get('/', ((req,res, next) => {
 	try {
@@ -42,15 +48,8 @@ app.get('/', ((req,res, next) => {
 	}
 }))
 
-const userController = require('./controllers/userController');
-app.use('/user', userController)
-
-const concertController = require('./controllers/concertController')
-app.use('/concert', concertController)
-
 app.listen(process.env.PORT, () => {
 	console.log('listening on port', process.env.PORT);
 })
 
 
-// 

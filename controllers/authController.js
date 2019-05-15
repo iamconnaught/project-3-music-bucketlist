@@ -22,8 +22,9 @@ router.post('/register', async (req,res, next) => {
 		const createdUser = await User.create(userDbEntry);	
 		req.session.loggedIn = true;
 		req.session.userDbId = createdUser._id;
+		console.log("we just registered as:");
 		console.log(createdUser);
-
+		console.log("and here is session");
 		console.log(req.session)
 
 		res.json({

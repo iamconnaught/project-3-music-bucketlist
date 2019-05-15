@@ -27,14 +27,17 @@ router.get('/', async (req, res, next) => {
 
 // USER PROFILE
 router.get('/:id', async (req, res, next) => {
+
 	try {
 		if(!req.session.loggedIn){
 			res.json({
 				data: "not logged in"
 			})
+		} else {
+			const foundUser = await User.findById(req.session.userDbId).populate('wishlist');
+			res.status(200).json(foundUser)
+			
 		}
-		const foundUser = await User.findById(req.params.id);
-		res.json(foundUser.username)
 	} catch (err){
 		next(err)
 	}
@@ -119,7 +122,9 @@ router.post('/newWish/:id', async (req, res, next) => {
 			artistId: req.params.id,
 			ownerId: currentUser
 		})
-
+		await thisWish.save()
+		currentUser.wishlist.push(thisWish)
+		await currentUser.save()
 		superagent
 			.get(`https://api.setlist.fm/rest/1.0/artist/${req.params.id}`)
 			.set('X-API-key', '42RVoNqJ0gn6Z4U6iagd4VbMJ2WA2REmLjOP')
