@@ -70,11 +70,11 @@ router.get('/search/setlist/:artist', (req, res, next) => {
 				data: justTheDataIWant
 			})
 		}).catch((error) => {
-			next(error)
-			// res.status(400).json({
-			// 	status: 400,
-			// 	error: error
-			// })
+			// next(error)
+			res.status(400).json({
+				status: 400,
+				error: error
+			})
 		})
 })
 
