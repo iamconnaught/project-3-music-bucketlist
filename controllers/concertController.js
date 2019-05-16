@@ -5,6 +5,59 @@ const Concert = require('../models/concert')
 const superagent = require('superagent')
 
 
+
+
+// API CALL THAT SEARCHES FOR ARTISTS' SETLISTS
+router.get('/search/setlist', (req, res, next) => {
+
+	// console.log("searching in concertController for artist: ", req.params.artist)
+	console.log("here is query string", req.query);
+	superagent
+		.get(`https://api.setlist.fm/rest/1.0/search/setlists?artistName=${req.query.artist}&p=1&sort=sortName`)
+		.set('X-API-key', '42RVoNqJ0gn6Z4U6iagd4VbMJ2WA2REmLjOP')
+		.set('Accept', 'application/json')
+		.then((data) => {
+			console.log("\n here's the data from the API call");
+			// console.log(data.text);
+			const actualData = JSON.parse(data.text)
+			console.log("\n---------here is the data from the superagent call to setlistFM");
+			console.log(actualData);
+			const justTheDataIWant = actualData.setlist.map(setlist =>{
+
+				return{
+					artist: setlist.artist.name,
+					id: setlist.id,
+					venue: setlist.venue.name,
+					city: setlist.venue.city.name,
+					state: setlist.venue.city.state,
+					date: setlist.eventDate,
+					set: setlist.sets.set.map(set => {
+						return {
+							song: set.song.map(song => {
+								return {
+									name: song.name
+								}
+							})
+						}
+					})
+
+				}
+			})
+			res.status(200).json({
+				status: 200,
+				data: justTheDataIWant
+			})
+		}).catch((error) => {
+			// next(error)
+			console.log(error);
+			res.status(400).json({
+				status: 400,
+				error: error
+			})
+		})
+})
+
+
 // API CALL THAT SEARCHES FOR ARTISTS
 router.get('/search/:artist', (req, res, next) => {
 	superagent
@@ -32,54 +85,6 @@ router.get('/search/:artist', (req, res, next) => {
 			// })
 		})
 })
-
-// API CALL THAT SEARCHES FOR ARTISTS' SETLISTS
-router.get('/search/setlist/:artist', (req, res, next) => {
-
-	console.log("searching in concertController for artist: ", req.params.artist)
-
-	superagent
-		.get(`https://api.setlist.fm/rest/1.0/search/setlists?artistName=${req.params.artist}&p=1&sort=sortName`)
-		.set('X-API-key', '42RVoNqJ0gn6Z4U6iagd4VbMJ2WA2REmLjOP')
-		.set('Accept', 'application/json')
-		.then((data) => {
-			// console.log(data.text);
-			const actualData = JSON.parse(data.text)
-			const justTheDataIWant = actualData.setlist.map(setlist =>{
-				return{
-					artist: setlist.artist.name,
-					id: setlist.id,
-					venue: setlist.venue.name,
-					city: setlist.venue.city.name,
-					state: setlist.venue.city.state,
-					date: setlist.eventDate.toDateString(),
-					set: setlist.sets.set.map(set => {
-						return {
-							song: set.song.map(song => {
-								return {
-									name: song.name
-								}
-							})
-						}
-					})
-
-				}
-			})
-			res.status(200).json({
-				status: 200,
-				data: justTheDataIWant
-			})
-		}).catch((error) => {
-			// next(error)
-			res.status(400).json({
-				status: 400,
-				error: error
-			})
-		})
-})
-
-
-
 // user attended a concert with
 // POST ROUTE FOR SETLIST
 router.post('/new/:id', async (req, res, next) => {
