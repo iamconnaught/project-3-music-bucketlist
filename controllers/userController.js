@@ -146,5 +146,18 @@ router.post('/newWish/:id', async (req, res, next) => {
 	
 })
 
+router.delete('/:id', async (req, res, next) => {
+	console.log('delete route hit in backend');
+  try {
+     const deletedWish = await Wish.findByIdAndRemove(req.params.id);
+      res.json({
+        status: 200,
+        data: deletedWish
+      });
+  } catch(err){
+    next(err);
+  }
+});
+
 
 module.exports = router;
