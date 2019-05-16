@@ -145,7 +145,7 @@ router.post('/new/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
 	try {
-		const deletedConcert = await Concert.findById(req.params.id);
+		const deletedConcert = await Concert.findByIdAndRemove(req.params.id);
 		res.json({
 			status: 200,
 			data: deletedConcert
