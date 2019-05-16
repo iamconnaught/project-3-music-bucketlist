@@ -52,7 +52,7 @@ router.get('/search/setlist/:artist', (req, res, next) => {
 					venue: setlist.venue.name,
 					city: setlist.venue.city.name,
 					state: setlist.venue.city.state,
-					date: setlist.eventDate,
+					date: setlist.eventDate.toDateString(),
 					set: setlist.sets.set.map(set => {
 						return {
 							song: set.song.map(song => {
