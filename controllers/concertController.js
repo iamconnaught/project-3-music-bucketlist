@@ -12,8 +12,23 @@ router.get('/search/setlist', (req, res, next) => {
 
 	// console.log("searching in concertController for artist: ", req.params.artist)
 	console.log("here is query string", req.query);
+
+
+	console.log(req.originalUrl)
+	// const apiCall = 'https://api.setlist.fm/rest/1.0/search/setlists?artistName='
+	// 	+ req.queryartist
+	const apiCall = `https://api.setlist.fm/rest/1.0/search/setlists?artistName=${req.query.artistName}&cityName=${req.query.cityName}&year=${req.query.year}`
+	console.log("here's the API call we're gonna do the next two lines should be identical");
+	console.log(apiCall);
+
+	console.log("here's the hard coded url they should match");
+
+	console.log('https://api.setlist.fm/rest/1.0/search/setlists?artistName=phish&cityName=chicago&year=2018');
 	superagent
-		.get(`https://api.setlist.fm/rest/1.0/search/setlists?artistName=${req.query.artist}&p=1&sort=sortName`)
+   		// .get('https://api.setlist.fm/rest/1.0/search/setlists?artistName=phish&cityName=chicago&year=2018')
+		.get(`https://api.setlist.fm/rest/1.0/search/setlists?artistName=${req.query.artistName}&cityName=${req.query.cityName}&year=${req.query.year}`)
+		// .get(`https://api.setlist.fm/rest/1.0/search/setlists?artistName=${req.query.artistName}&cityName=${req.query.cityName}&year=${req.query.year}`)
+		// .get(`https://api.setlist.fm/rest/1.0/search/setlists?artistName=brand%20new&cityName=chicago&year=2017`)
 		.set('X-API-key', '42RVoNqJ0gn6Z4U6iagd4VbMJ2WA2REmLjOP')
 		.set('Accept', 'application/json')
 		.then((data) => {
@@ -49,7 +64,7 @@ router.get('/search/setlist', (req, res, next) => {
 			})
 		}).catch((error) => {
 			// next(error)
-			console.log(error);
+			// console.log(error);
 			res.status(400).json({
 				status: 400,
 				error: error
